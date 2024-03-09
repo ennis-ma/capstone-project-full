@@ -16,6 +16,9 @@ export const resources: IResourceItem[] = [
     },
   },
   {
+    name: "sensorData",
+  },
+  {
     name: "sensors",
     list: "/sensors",
     show: "/sensors/:id",

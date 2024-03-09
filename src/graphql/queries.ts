@@ -39,10 +39,6 @@ export const GET_SENSORS_QUERY = gql`
         id
         name
         metadata
-        data {
-          ts
-          value_string
-        }
       }
     }
   }
@@ -55,7 +51,27 @@ export const GET_SENSOR_QUERY = gql`
       id
       name
       metadata
-      data {
+    }
+  }
+`;
+
+// Query to get all sensors
+export const GET_SENSOR_DATA_QUERY = gql`
+  query GetSensorData(
+    $topic_id: ID
+    $filter: SensorDataFilter!
+    $sorting: [SensorDataSorting!]
+    $paging: OffsetPaging!
+  ) {
+    sensorData(
+      filter: $filter
+      sorting: $sorting
+      paging: $paging
+      topic_id: $topic_id
+    ) {
+      totalCount
+      nodes {
+        topic_id
         ts
         value_string
       }

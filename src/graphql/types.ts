@@ -47,11 +47,7 @@ export type GetSensorsQueryVariables = Types.Exact<{
 
 export type GetSensorsQuery = {
   sensors: Pick<Types.SensorResponse, "totalCount"> & {
-    nodes: Array<
-      Pick<Types.Sensor, "id" | "name" | "metadata"> & {
-        data: Array<Pick<Types.SensorData, "ts" | "value_string">>;
-      }
-    >;
+    nodes: Array<Pick<Types.Sensor, "id" | "name" | "metadata">>;
   };
 };
 
@@ -60,8 +56,21 @@ export type GetSensorQueryVariables = Types.Exact<{
 }>;
 
 export type GetSensorQuery = {
-  sensor: Pick<Types.Sensor, "id" | "name" | "metadata"> & {
-    data: Array<Pick<Types.SensorData, "ts" | "value_string">>;
+  sensor: Pick<Types.Sensor, "id" | "name" | "metadata">;
+};
+
+export type GetSensorDataQueryVariables = Types.Exact<{
+  topic_id?: Types.InputMaybe<Types.Scalars["ID"]["input"]>;
+  filter: Types.SensorDataFilter;
+  sorting?: Types.InputMaybe<
+    Array<Types.SensorDataSorting> | Types.SensorDataSorting
+  >;
+  paging: Types.OffsetPaging;
+}>;
+
+export type GetSensorDataQuery = {
+  sensorData: Pick<Types.SensorDataResponse, "totalCount"> & {
+    nodes: Array<Pick<Types.SensorData, "topic_id" | "ts" | "value_string">>;
   };
 };
 

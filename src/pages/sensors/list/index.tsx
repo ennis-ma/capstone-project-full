@@ -1,20 +1,20 @@
 import CustomAvatar from "@/components/custom-avatar";
-import { GET_SENSORS_QUERY } from "@/graphql/queries";
+import { GET_SENSORS_QUERY, GET_SENSOR_DATA_QUERY } from "@/graphql/queries";
 import { SearchOutlined } from "@ant-design/icons";
 import {
   CreateButton,
   DeleteButton,
   EditButton,
+  ExportButton,
   FilterDropdown,
   List,
   useTable,
 } from "@refinedev/antd";
-import { getDefaultFilter, useGo } from "@refinedev/core";
-import { Input, Space, Table } from "antd";
+import { getDefaultFilter, useExport, useGo } from "@refinedev/core";
+import { Checkbox, Input, Space, Table } from "antd";
 import { Text } from "../../../components/text";
 import { Sensor } from "@/graphql/schema.types";
-import { GetSensorsQuery } from "@/graphql/types";
-import { GetFieldsFromList } from "@refinedev/nestjs-query";
+import { useState } from "react";
 
 export const SensorList = ({ children }: React.PropsWithChildren) => {
   const go = useGo();
@@ -54,25 +54,64 @@ export const SensorList = ({ children }: React.PropsWithChildren) => {
     },
   });
 
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+
+  const { triggerExport } = useExport({
+    resource: "sensorData",
+    meta: {
+      gqlQuery: GET_SENSOR_DATA_QUERY,
+    },
+    filters: [
+      {
+        field: "topic_id",
+        operator: "in",
+        value: selectedRowKeys,
+      },
+    ],
+    sorters: [
+      { field: "topic_id", order: "asc" },
+      {
+        field: "ts",
+        order: "asc",
+      },
+    ],
+    onError: (error) => {
+      console.error("Error exporting data:", error);
+    },
+  });
+
+  const handleSelectionChange = (e: any, record: Sensor) => {
+    const isChecked = e.target.checked;
+    setSelectedRowKeys(
+      isChecked
+        ? [...selectedRowKeys, record.id]
+        : selectedRowKeys.filter((key: string) => key !== record.id)
+    );
+  };
+
   return (
     <div>
       <List
         breadcrumb={false}
         headerButtons={() => (
-          <CreateButton
-            onClick={() => {
-              go({
-                to: {
-                  resource: "sensors",
-                  action: "create",
-                },
-                options: {
-                  keepQuery: true,
-                },
-                type: "replace",
-              });
-            }}
-          />
+          // add two buttons to the header
+          <Space>
+            {/* <CreateButton
+              onClick={() => {
+                go({
+                  to: {
+                    resource: "sensors",
+                    action: "create",
+                  },
+                  options: {
+                    keepQuery: true,
+                  },
+                  type: "replace",
+                });
+              }}
+            /> */}
+            <ExportButton onClick={triggerExport} />
+          </Space>
         )}
       >
         <Table
@@ -81,21 +120,36 @@ export const SensorList = ({ children }: React.PropsWithChildren) => {
             ...tableProps.pagination,
           }}
           onRow={(record) => ({
-            onClick: () => {
-              go({
-                to: {
-                  resource: "sensors",
-                  action: "show",
-                  id: record.id,
-                },
-                options: {
-                  keepQuery: true,
-                },
-                type: "replace",
-              });
+            onClick: (event) => {
+              const target = event.target as HTMLElement;
+
+              if (target.tagName !== "INPUT") {
+                go({
+                  to: {
+                    resource: "sensors",
+                    action: "show",
+                    id: record.id,
+                  },
+                  options: {
+                    keepQuery: true,
+                  },
+                  type: "replace",
+                });
+              }
             },
           })}
         >
+          <Table.Column<Sensor>
+            title="Select"
+            key="selection"
+            fixed="left"
+            render={(value, record) => (
+              <Checkbox
+                checked={selectedRowKeys.includes(record.id)} // Determine if checked
+                onChange={(e) => handleSelectionChange(e, record)}
+              />
+            )}
+          />
           <Table.Column<Sensor>
             dataIndex="id"
             title="Sensor ID"

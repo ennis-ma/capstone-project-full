@@ -70,6 +70,7 @@ export type Query = {
   getUser?: Maybe<User>;
   getUsers?: Maybe<Array<Maybe<User>>>;
   sensor: Sensor;
+  sensorData: SensorDataResponse;
   sensors: SensorResponse;
   user?: Maybe<User>;
 };
@@ -80,6 +81,13 @@ export type QueryGetUserArgs = {
 
 export type QuerySensorArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QuerySensorDataArgs = {
+  filter?: InputMaybe<SensorDataFilter>;
+  paging?: InputMaybe<OffsetPaging>;
+  sorting?: InputMaybe<Array<InputMaybe<SensorDataSorting>>>;
+  topic_id?: InputMaybe<Scalars["ID"]["input"]>;
 };
 
 export type QuerySensorsArgs = {
@@ -99,15 +107,31 @@ export type RegisterInput = {
 };
 
 export type Sensor = {
-  data: Array<SensorData>;
   id: Scalars["ID"]["output"];
   metadata: Scalars["String"]["output"];
   name: Scalars["String"]["output"];
 };
 
 export type SensorData = {
+  topic_id: Scalars["ID"]["output"];
   ts: Scalars["String"]["output"];
   value_string: Scalars["String"]["output"];
+};
+
+export type SensorDataFilter = {
+  topic_id?: InputMaybe<Scalars["JSON"]["input"]>;
+  ts?: InputMaybe<Scalars["JSON"]["input"]>;
+  value_string?: InputMaybe<Scalars["JSON"]["input"]>;
+};
+
+export type SensorDataResponse = {
+  nodes: Array<SensorData>;
+  totalCount: Scalars["Int"]["output"];
+};
+
+export type SensorDataSorting = {
+  direction: Scalars["String"]["input"];
+  field: Scalars["String"]["input"];
 };
 
 export type SensorFilter = {
