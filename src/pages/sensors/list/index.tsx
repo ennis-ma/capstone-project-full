@@ -54,7 +54,7 @@ export const SensorList = ({ children }: React.PropsWithChildren) => {
     },
   });
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const [SelectedSensorData, setSelectedSensorData] = useState<string[]>([]);
 
   const { triggerExport } = useExport({
     resource: "sensorData",
@@ -65,7 +65,7 @@ export const SensorList = ({ children }: React.PropsWithChildren) => {
       {
         field: "topic_id",
         operator: "in",
-        value: selectedRowKeys,
+        value: SelectedSensorData,
       },
     ],
     sorters: [
@@ -82,10 +82,10 @@ export const SensorList = ({ children }: React.PropsWithChildren) => {
 
   const handleSelectionChange = (e: any, record: Sensor) => {
     const isChecked = e.target.checked;
-    setSelectedRowKeys(
+    setSelectedSensorData(
       isChecked
-        ? [...selectedRowKeys, record.id]
-        : selectedRowKeys.filter((key: string) => key !== record.id)
+        ? [...SelectedSensorData, record.id]
+        : SelectedSensorData.filter((key: string) => key !== record.id)
     );
   };
 
@@ -145,7 +145,7 @@ export const SensorList = ({ children }: React.PropsWithChildren) => {
             fixed="left"
             render={(value, record) => (
               <Checkbox
-                checked={selectedRowKeys.includes(record.id)} // Determine if checked
+                checked={SelectedSensorData.includes(record.id)} // Determine if checked
                 onChange={(e) => handleSelectionChange(e, record)}
               />
             )}

@@ -32,9 +32,6 @@ export const resources: IResourceItem[] = [
   {
     name: "reports",
     list: "/reports",
-    show: "/reports/:id",
-    create: "/reports/new",
-    edit: "/reports/edit/:id",
     meta: {
       label: "Reports",
       icon: <TableOutlined />,

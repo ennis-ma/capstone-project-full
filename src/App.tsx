@@ -31,6 +31,7 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Layout from "./components/layout";
 import { resources } from "./config/resources";
 import { SensorDetailPage } from "./pages/sensors/show";
+import ReportsPage from "./pages/reports";
 
 function App() {
   return (
@@ -40,7 +41,6 @@ function App() {
           <Refine
             dataProvider={dataProvider}
             liveProvider={liveProvider}
-            notificationProvider={useNotificationProvider}
             routerProvider={routerBindings}
             authProvider={authProvider}
             resources={resources}
@@ -72,6 +72,9 @@ function App() {
                 <Route path="/sensors">
                   <Route index element={<SensorList />} />
                   <Route path="/sensors/:id" element={<SensorDetailPage />} />
+                </Route>
+                <Route path="/reports">
+                  <Route index element={<ReportsPage />} />
                 </Route>
               </Route>
             </Routes>

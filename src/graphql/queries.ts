@@ -55,13 +55,12 @@ export const GET_SENSOR_QUERY = gql`
   }
 `;
 
-// Query to get all sensors
 export const GET_SENSOR_DATA_QUERY = gql`
   query GetSensorData(
-    $topic_id: ID
+    $topic_id: [ID]
     $filter: SensorDataFilter!
-    $sorting: [SensorDataSorting!]
-    $paging: OffsetPaging!
+    $sorting: [SensorDataSorting]
+    $paging: OffsetPaging
   ) {
     sensorData(
       filter: $filter

@@ -37,7 +37,7 @@ export const SensorDetailModal = () => {
     meta: {
       gqlQuery: GET_SENSOR_DATA_QUERY,
       customVariables: {
-        topic_id: id,
+        topic_id: [id],
       },
     },
   });

@@ -60,12 +60,16 @@ export type GetSensorQuery = {
 };
 
 export type GetSensorDataQueryVariables = Types.Exact<{
-  topic_id?: Types.InputMaybe<Types.Scalars["ID"]["input"]>;
+  topic_id?: Types.InputMaybe<
+    | Array<Types.InputMaybe<Types.Scalars["ID"]["input"]>>
+    | Types.InputMaybe<Types.Scalars["ID"]["input"]>
+  >;
   filter: Types.SensorDataFilter;
   sorting?: Types.InputMaybe<
-    Array<Types.SensorDataSorting> | Types.SensorDataSorting
+    | Array<Types.InputMaybe<Types.SensorDataSorting>>
+    | Types.InputMaybe<Types.SensorDataSorting>
   >;
-  paging: Types.OffsetPaging;
+  paging?: Types.InputMaybe<Types.OffsetPaging>;
 }>;
 
 export type GetSensorDataQuery = {

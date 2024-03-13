@@ -87,7 +87,7 @@ export type QuerySensorDataArgs = {
   filter?: InputMaybe<SensorDataFilter>;
   paging?: InputMaybe<OffsetPaging>;
   sorting?: InputMaybe<Array<InputMaybe<SensorDataSorting>>>;
-  topic_id?: InputMaybe<Scalars["ID"]["input"]>;
+  topic_id?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
 };
 
 export type QuerySensorsArgs = {
@@ -119,7 +119,7 @@ export type SensorData = {
 };
 
 export type SensorDataFilter = {
-  topic_id?: InputMaybe<Scalars["JSON"]["input"]>;
+  id?: InputMaybe<Array<InputMaybe<Scalars["ID"]["input"]>>>;
   ts?: InputMaybe<Scalars["JSON"]["input"]>;
   value_string?: InputMaybe<Scalars["JSON"]["input"]>;
 };
